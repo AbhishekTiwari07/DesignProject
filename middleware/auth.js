@@ -10,7 +10,7 @@ const auth = async (req,res,next) =>{
         if(!user){
             throw new Error("error")
         }
-        req.user = user
+        req.user = user;
     }
     catch(e){
         return res.send({

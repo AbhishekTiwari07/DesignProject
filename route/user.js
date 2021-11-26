@@ -45,4 +45,50 @@ router.post('/login', async (req,res)=>{
     }
 });
 
+
+router.get('/transaction/me', auth, async (req, res)=>{
+    try{
+        const transactions = await Transaction.findOne({
+            _id : req.user.id
+        });
+        res.status(200).send(transactions);
+    }
+    catch(e){
+        res.status(400).send({
+            message: e.message
+        })
+    }
+});
+
+router.get('/transaction', async (req, res)=>{
+    try{
+        const transactions = await Transaction.find();
+        res.status(200).send(transactions);
+    }
+    catch(e){
+        res.status(400).send({
+            message: e.message
+        })
+    }
+});
+
+router.post('/transaction', async (req,res)=>{
+    try{
+        if(!req.body.sender_name)
+            req.body['sender_name'] = 'Kakabito'
+        const transaction = new Transaction(req.body);
+        const result = await transaction.save();
+
+        res.status(200).send({
+            message: 'Transaction Saved',
+            result
+        })
+    }
+    catch(e){
+        res.status(400).json({
+            message: e.message
+        })
+    }
+})
+
 module.exports = router;
