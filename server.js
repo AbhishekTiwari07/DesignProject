@@ -1,5 +1,7 @@
 const express = require('express');
 require('dotenv').config();
+const user = require('./route/user');
+const cors = require('cors');
 const app = express();
 
 const PORT = process.env.PORT || 3000;
@@ -17,6 +19,6 @@ app.use('/user', user);
 
 app.listen(PORT, err=>{
     if(err)
-        return console.log(err)
-    console.log(`App is up at ${PORT}`)
-})
+        return console.log(err);
+    console.log(`Server is up at ${PORT}`);
+});

@@ -18,10 +18,10 @@ const userSchema = new Schema({
         required: true
     },
     bio: String,
-    artworks: [{
-        type: Schema.Types.ObjectId,
-        ref: "Image"
-    }]
+    public_address: {
+        type: String,
+        required: true,
+    }
 },{
     timestamps: true
 });
