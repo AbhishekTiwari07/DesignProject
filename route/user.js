@@ -46,6 +46,23 @@ router.post('/login', async (req,res)=>{
     }
 });
 
+router.get('/me', auth, async (req,res)=>{
+    try{
+        const user = await User.findOne({
+            _id: req.user.id
+        });
+
+        res.send(200).status({
+            user
+        });
+    }
+    catch(e){
+        res.status(400).send({
+            message: e.message
+        });
+    }
+});
+
 
 router.get('/transaction/me', auth, async (req, res)=>{
     try{
