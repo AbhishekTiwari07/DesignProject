@@ -99,7 +99,7 @@ router.post('/transaction', async (req,res)=>{
         const result = await transaction.save();
 
         var charity = await Charity.findOne({
-            public_address: req.user.public
+            public_address: req.body.to
         });
 
         charity.target -= result.amount;
