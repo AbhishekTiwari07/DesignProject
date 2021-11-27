@@ -107,6 +107,6 @@ router.post('/transaction', async (req,res)=>{
             message: e.message
         })
     }
-})
+});
 
 module.exports = router;

@@ -14,6 +14,9 @@ const transactionSchema = new Schema({
         type: String,
         required: true
     },
+    charity_name:{
+        type: String
+    },
     amount:{
         type: Number,
         required: true
