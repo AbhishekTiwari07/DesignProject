@@ -1,5 +1,6 @@
 const User = require('../model/user')
 const Transaction = require('../model/transaction')
+const Charity = require('../model/charity')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const router = require('express').Router()
@@ -96,6 +97,14 @@ router.post('/transaction', async (req,res)=>{
             req.body['sender_name'] = 'Kakabito'
         const transaction = new Transaction(req.body);
         const result = await transaction.save();
+
+        var charity = await Charity.findOne({
+            public_address: req.user.public
+        });
+
+        charity.target -= result.amount;
+
+        await charity.save();
 
         res.status(200).send({
             message: 'Transaction Saved',
