@@ -1,6 +1,7 @@
 const express = require('express');
 require('dotenv').config();
 const user = require('./route/user');
+const charity = require('./route/charity');
 const cors = require('cors');
 const app = express();
 require('./db/db');
@@ -17,6 +18,7 @@ app.use(cors({
 }));
 
 app.use('/user', user);
+app.use('/charity', charity);
 
 app.listen(PORT, err=>{
     if(err)

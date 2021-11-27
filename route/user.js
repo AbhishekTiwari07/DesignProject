@@ -1,4 +1,5 @@
 const User = require('../model/user')
+const Transaction = require('../model/transaction')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const router = require('express').Router()
@@ -48,8 +49,8 @@ router.post('/login', async (req,res)=>{
 
 router.get('/transaction/me', auth, async (req, res)=>{
     try{
-        const transactions = await Transaction.findOne({
-            _id : req.user.id
+        const transactions = await Transaction.find({
+            from: req.user.public_address
         });
         res.status(200).send(transactions);
     }
