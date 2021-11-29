@@ -1,15 +1,8 @@
-const Charity = require('../model/charity')
-const router = require('express').Router()
-const auth = require('../middleware/auth')
-require('dotenv').config()
-
-
-var Web3 = require('web3');
-var provider = 'http://127.0.0.1:7545';
-var web3Provider = new Web3.providers.HttpProvider(provider);
-var web3 = new Web3(web3Provider);
-
-var abi =  [
+var ethers = require('ethers');
+var url = 'http://127.0.0.1:7545';
+var provider = new ethers.providers.JsonRpcProvider(url);
+var address  = '0x5722A0014024FE9C5e827c10E5f5Fcf548D05eBd';
+var abi = [
     {
       "inputs": [],
       "payable": false,
@@ -209,75 +202,14 @@ var abi =  [
       "type": "function"
     }
   ];
+var contract = new ethers.Contract(address,abi,provider);
 
-const address = "0x1b54708B192A63B0be5Daa8E02B76288bAAfBc59"
+const contract_data = async ()=>{
+    var result = await contract.getAddress();
+    console.log(result)
 
-const contract = new web3.eth.Contract(abi, address);
+    // var result = await contract.addCharity('Diwana', 'Meta Illness', 2000);
+    // console.log(result)
+}
 
-router.post('/register', async (req,res)=>{
-    try{
-        const {
-            name,
-            cause,
-            target,
-            public_address
-        } = req.body;
-
-        var res_charity = await Charity.findOne({
-            public_address
-        })
-
-        if(res_charity)
-            throw new Error('Charity already Exist')
-
-        var result = await contract.methods.addCharity(name, cause, target).send(
-        {
-            from: public_address,
-            gas: 200000,
-            gasPrice: 200000000
-        });
-
-        console.log(result)
-
-        const charity = new Charity(req.body);
-
-        result = await charity.save();
-        
-        res.status(200).send(result);
-    }
-    catch(e){
-        res.status(400).send({
-            message: e.message
-        })
-    }
-});
-
-router.get('/all', async (req,res)=>{
-    try{
-        const charity = await Charity.find();
-        res.status(200).send(charity);
-    }
-    catch(e){
-        res.status(400).send({
-            message: e.message
-        })
-    }
-});
-
-
-router.get('/all/:type', async (req,res)=>{
-    try{
-        const charity = await Charity.find({
-            cause: req.params.type
-        });
-        res.status(200).send(charity);
-    }
-    catch(e){
-        res.status(400).send({
-            message: e.message
-        })
-    }
-});
-
-
-module.exports = router;
+contract_data();

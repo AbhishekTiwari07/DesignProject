@@ -35,7 +35,7 @@ contract Contract{
     
     
     function donateTo(string memory name,uint amount, address payable dest) public payable{
-        require(msg.value >= amount, "Failed to send Ether");
+        // require(msg.value >= amount, "Failed to send Ether");
         bool pay = dest.send(msg.value);
         require(pay, "Failed to send Ether");
         Donate memory temp = Donate(name, amount, msg.sender, dest);
